@@ -1,10 +1,10 @@
 package main
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
 	"io/ioutil"
-	"log"
 
 	"github.com/go-ego/gse"
 )
@@ -23,6 +23,9 @@ func main() {
 	err := seg.LoadDict("jp")
 	fmt.Println("load dictionary error: ", err)
 
+	err = seg.LoadDict("./custom-dict.txt")
+	fmt.Println("load dictionary error: ", err)
+
 	// fmt.Println(seg.Cut(*text, true))
 	// fmt.Println(seg.CutAll(*text))
 	// fmt.Println(seg.CutSearch(*text))
@@ -37,12 +40,26 @@ func main() {
 	text2, err := ioutil.ReadFile("01.srt")
 	fmt.Println("file read err: ", err)
 
-	// text2 := []byte("運命は神の考えるものだ。人間は人間らしく働けばそれで結構だ。")
-	segs := seg.Segment(text2)
-	log.Println(gse.ToString(segs))
-	// print segs array
-	for _, seg := range segs {
-		fmt.Println(seg.Token().Pos(), seg.Token().Text(), seg.Token().Freq())
+	// loop at filecontents per line
+	// split bytes string into lines at newline
+	texts := bytes.Split(text2, []byte("\n"))
+	for _, text := range texts {
+		fmt.Println("--------------------")
+		fmt.Println(string(text))
+		fmt.Println("- - - - - -")
+		segs := seg.Segment(text)
+		// print segs array
+		for _, seg := range segs {
+			fmt.Println(seg.Token().Pos(), seg.Token().Text(), seg.Token().Freq())
+		}
 	}
+
+	// // text2 := []byte("運命は神の考えるものだ。人間は人間らしく働けばそれで結構だ。")
+	// segs := seg.Segment(text2)
+	// log.Println(gse.ToString(segs))
+	// // print segs array
+	// for _, seg := range segs {
+	// 	fmt.Println(seg.Token().Text())
+	// }
 
 }
