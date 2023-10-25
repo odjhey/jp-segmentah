@@ -44,13 +44,12 @@ func main() {
 	// split bytes string into lines at newline
 	texts := bytes.Split(text2, []byte("\n"))
 	for _, text := range texts {
-		fmt.Println("--------------------")
-		fmt.Println(string(text))
-		fmt.Println("- - - - - -")
+		fmt.Println(">---", string(text))
 		segs := seg.Segment(text)
 		// print segs array
 		for _, seg := range segs {
-			fmt.Println(seg.Token().Pos(), seg.Token().Text(), seg.Token().Freq())
+			// fmt.Println(seg.Token().Pos(), seg.Token().Text(), seg.Token().Freq())
+			fmt.Println("<---", seg.Token().Text())
 		}
 	}
 
@@ -61,5 +60,4 @@ func main() {
 	// for _, seg := range segs {
 	// 	fmt.Println(seg.Token().Text())
 	// }
-
 }
